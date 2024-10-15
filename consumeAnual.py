@@ -59,28 +59,55 @@ if categorias and minAbs and maxAbs:  # Solo continuar si hay datos válidos
         name='Temperatura Mínima'
     ))
 
+    min_temp = min(minAbs)
+    anio_min = categorias[minAbs.index(min_temp)]
+    #print(f"La temperatura mínima fue de {min_temp}°C en {anio_min}")
+    max_temp = max(maxAbs)
+    anio_max = categorias[maxAbs.index(max_temp)]
+    #print(f"La temperatura mínima fue de {max_temp}°C en {anio_max}")
+
     fig.update_layout(
         polar=dict(
             radialaxis=dict(
                 visible=True,
-                range=[min(minAbs), max(maxAbs)]  # Ajustar rango según tus datos filtrados
+                range=[min_temp, max_temp]  # Ajustar rango según tus datos filtrados
             )
         ),
         showlegend=True
     )
-    
+
     fig.update_layout(
-    title=dict(
-        text=nombreEstacion,
-        font=dict(
-            size=30
-        ),
-        automargin=True,
+        title=dict(
+            text=nombreEstacion,
+            font=dict(
+                size=30
+            ),
+            automargin=True,
+            yref='paper'
+        )
+    )
+    # agrega los maximos y minimos
+    # Agregar anotaciones para los valores mínimo y máximo con el símbolo de grado
+    fig.add_annotation(
+        x=0.5,
+        y=0.1,
+        text=f'Mínima: {"{0:.1f}".format(min_temp)}°, en {anio_min}',
+        showarrow=False,
+        font=dict(size=20),
+        xref='paper',
         yref='paper'
     )
-)
+
+    fig.add_annotation(
+        x=0.5,
+        y=0.9,
+        text=f'Máxima: {"{0:.1f}".format(max_temp)}°, en {anio_max}',
+        showarrow=False,
+        font=dict(size=20),
+        xref='paper',
+        yref='paper'
+    )
 
     fig.show()
 else:
     print("No hay suficientes datos válidos para graficar.")
-
